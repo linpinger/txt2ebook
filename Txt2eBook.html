@@ -1,0 +1,66 @@
+<html><head>
+<meta http-equiv=Content-Type content="text/html; charset=UTF-8">
+<title>Txt2eBook(文本转电子书:mobi,epub,pdf,umd)</title>
+<meta name="keywords" content="FoxRamOSTool,RamOS制作工具,RamXP,AnsiTxt2Mobi,AnsiTxt2Epub,Text2Mobi,Text2Epub,文本转Epub,文本转mobi,文本转prc,txt2pdf,文本转PDF,Kindle文本格式转换工具,linpinger,爱尔兰之狐">
+<meta name="description" content="说明: linpiner(爱尔兰之狐)的一些脚本，例如制作RamOS的工具，Epub/Kindle格式Mobi/PDF转换等等应用">
+<style>
+<!--
+body{line-height:200%}
+h1,h2{text-align:center}
+a:link{color:#0000ff} 
+a:visited{color:#0066FF}
+a:hover{color:#FF0000} 
+a:active{color:#FF0000}
+-->
+</style>
+</head><body>
+
+<h2>Txt2eBook(文本转电子书:mobi,epub,pdf,umd)</h2>
+<table border="0" width=80% cellpadding="0" cellspacing="0" align="center"><tr><td>
+
+<b>名称:</b> Txt2eBook<br>
+<b>功能:</b> 将文本文件转换为各种格式的电子书:mobi(Kindel电子书),Epub(不包含字体),pdf(6寸),umd(手机电子书)<br>
+<b>作者:</b> 爱尔兰之狐(linpinger)<br>
+<b>邮箱:</b> <a href="mailto:linpinger@gmail.com">linpinger@gmail.com</a><br>
+<b>主页:</b> <a href="http://www.autohotkey.net/~linpinger/index.html?s=Atc_Txt2eBook">http://www.autohotkey.net/~linpinger/index.html?s=Atc_Txt2eBook</a><br>
+<br>
+<b>缘起:</b> 基于txt2mobi程序，添加其他格式支持，扩大使用范围<br>
+<b>原理:</b> TXT -&gt; UTF-8 HTML/NCX/OPF -&gt;(kindlegen/mobigen) Mobi / Epub<br>
+<br>
+<b>下载:</b><br>
+<ul>
+<li>程序(单独处理txt, 生成目录):</b> <a href="Txt2eBook.exe">Txt2eBook.exe</a></li>
+<hr>
+<li>源代码(单独处理txt, 生成目录):</b> <a href="Txt2eBook.ahkL">Txt2eBook.ahkL</a></li>
+</ul>
+<br>
+<div style="color:#FF0000; font-weight:bold">本程序从<a href="../mobi/AnsiTxt2Mobi.html">AnsiTxt2Mobi</a>升级而来</div>
+<br>
+<b>截图:</b><br>
+<img src="Txt2eBook.png"><br><br>
+
+<b>最简单的使用方法: </b>将文本文件拖动到列表框(窗口中最大的那个框)中, 按 顶部右边的 Epub / Mobi / PDF 菜单，然后就会生成Epub/mobi/pdf文件(有没有目录得看你的Txt的标题是不是 第xxx 章 这样的类型)<br><br>
+<b>复杂的使用方法: </b>见: <a href="../mobi/AnsiTxt2Mobi.html">AnsiTxt2Mobi</a><br><br>
+<b>可能的保存生成电子书的路径: </b><br>
+<ul>
+	<li>程序所在目录</li>
+	<li>文件所在目录</li>
+	<li>C:\</li>
+	<li>C:\etc\</li>
+</ul>
+
+<b>更新日志:</b><br>
+<ul>
+	<li>2013-06-22: 修正: Mobi/Epub无法修改作者名</li>
+	<li>2013-05-08: 修正: 取消默认置顶，增加GUI宽度以适应win7，可在拖入文件后修改正则，回车即可，避免再次拖入文件</li>
+	<li>2013-05-07: 修正: mobigen生成的mobi格式在Kindle PaperWhite上，跳转目录显示为乱码，需使用kindlegen，多谢:那个小谁 永远的冥王星 帮助测试</li>
+	<li>2013-04-19: 小修改: 生成菜单靠右，添加UMD到主菜单栏</li>
+	<li>2013-03-31: 从AnsiTxt2Mobi中分离出来，扩大使用范围，修改正则表达式</li>
+	<li>2013-03-08: 部分重写: 加入生成Epub格式选项，可能导致删除临时文件选项无效, 多谢 colin 的留言(其实有点懒，不怎么想更新这个程序了，其实我写的另一个工具FoxBook已有epub支持，甚至umd,chm等)</li>
+</ul>
+</td></tr></table>
+
+<!-- 站长统计 -->
+<script src="http://s14.cnzz.com/stat.php?id=3279032&web_id=3279032&online=1&show=line" language="JavaScript"></script>
+</body></html>
+
