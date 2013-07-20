@@ -1,6 +1,6 @@
 #NoENV
 ; 预计功能: 根据正则分析标题，生成包含目录的ebook文件
-VerDate := "2013-06-22"
+VerDate := "2013-07-15"
 ; 2013-5-7: mobigen生成的mobi格式在Kindle PaperWhite上，跳转目录显示为乱码，需使用kindlegen
 If A_IsCompiled
 {
@@ -23,7 +23,7 @@ Ui)([0-9]{1,5}\.)
 )
 
 
-Gui +LastFound 
+Gui +LastFound +Resize +MinSize480x425 + MaxSize600x500
 hGUI := WinExist()  ; 该参数影响 选项菜单
 
 Gosub, MenuInit
@@ -297,6 +297,23 @@ Txt2eBook:   ; 依赖 SrcFilePath
 	LV_GetText(BookName, 1, 1) ; 书名
 	LV_GetText(FoxCreator, 2, 1) ; 作者,默认:爱尔兰之狐
 	FoxVar("BookCreator", FoxCreator)
+
+	; 预测试生成保存路径，并提示用户
+	TestPath = %FoxDir%\%bookname%.%EpubOutExt%
+	IfNotExist, %TestPath%
+	{
+		fileappend, FoxTest, %TestPath%
+		ifExist, %TestPath%
+		{
+			filedelete, %TestPath%
+		} else {
+			msgbox, 预测试生成文件失败: %TestPath%`n`n可能原因是书名不符合文件系统文件名规范，或该目录只读
+			return
+		}
+	} else {
+		msgbox, 文件已存在，请重命名原文件`n%TestPath%
+		return
+	}
 
 	LinkID := 11 , LVNum := 3 , Toc := "" , Body := ""
 	LV_GetText(NowTitle, LVNum, 1) , LV_GetText(NownTitleLine, LVNum, 2)
