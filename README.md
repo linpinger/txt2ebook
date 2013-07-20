@@ -13,7 +13,7 @@ Txt2eBook
 
 下载:
 
-程序(单独处理txt, 生成目录): [Txt2eBook.exe](Txt2eBook.exe)
+程序(单独处理txt, 生成目录): [Txt2eBook.exe](https://raw.github.com/linpinger/Txt2eBook/master/Txt2eBook.exe)
 
 源代码(单独处理txt, 生成目录): [Txt2eBook.ahkL](Txt2eBook.ahkL)
 
