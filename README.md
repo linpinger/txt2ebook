@@ -1,6 +1,8 @@
 Txt2eBook
 =========
 
+声明: 本程序调用了 amazon 的 kindlegen/mobigen，code.google上的umdbuilder, zip.exe, libhpdf.dll，版权归各被调用程序及库的所有者
+
 功能: 将文本文件转换为各种格式的电子书:mobi(Kindel电子书),Epub(不包含字体),pdf(6寸),umd(手机电子书) 
 
 爱尔兰之狐:
