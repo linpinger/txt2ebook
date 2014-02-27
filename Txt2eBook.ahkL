@@ -1,6 +1,6 @@
 #NoENV
 ; 预计功能: 根据正则分析标题，生成包含目录的ebook文件
-VerDate := "2014-02-18"
+VerDate := "2014-02-27"
 ; 2013-5-7: mobigen生成的mobi格式在Kindle PaperWhite上，跳转目录显示为乱码，需使用kindlegen
 If A_IsCompiled
 {
@@ -38,7 +38,7 @@ NewGuiInit:
 
 	Gui, Add, GroupBox, x6 y70 w460 h270 cBlue, 第二步: 拖动Txt文件到下面，列表可编辑并影响生成结果
 	Gui, Add, ListView, x16 y90 w440 h240 NoSortHdr -ReadOnly vFoxLV gClickLV, 标题|行号
-		 LV_ModifyCol(1, 340) , LV_ModifyCol(2, 60)
+		 LV_ModifyCol(1, 320) , LV_ModifyCol(2, 90)
 
 	Gui, Add, GroupBox, x6 y350 w460 h50 cBlue, 第三步: 处理过程选项，确认后按顶部菜单 生成eBook
 	Gui, Add, CheckBox, x16 y370 w110 h20 cGreen Checked vCK3, 删除行首空白:
@@ -246,13 +246,13 @@ ReDragFile: ; 重新检测文件
 
 	FileReadLine, BookName, %SrcFilePath%, 1
 	If ( BookName != "" )
-		LV_Add("", BookName, "★左侧是书名，按F2修改，勿删本行★")
+		LV_Add("", BookName, "★书名行，按F2修改，勿删本行★")
 	else {
 		SplitPath, SrcFilePath, , , , OutNameNoExt
-		LV_Add("", OutNameNoExt, "★左侧是书名，按F2修改，勿删本行★")
+		LV_Add("", OutNameNoExt, "★书名行，按F2修改，勿删本行★")
 		Traytip, 未检测到书名:, 以文件名替代书名，如有错误:`n请选中列表第一行并按F2修改
 	}
-	LV_Add("", "爱尔兰之狐", "★左侧是编辑者，按F2修改，勿删本行★")
+	LV_Add("", "爱尔兰之狐", "★作者行，按F2修改，勿删本行★")
 	loop, parse, NR, `n, `r
 	{
 		If ( CK2 = 1 ) {
