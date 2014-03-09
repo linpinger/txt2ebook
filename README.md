@@ -29,6 +29,8 @@ Txt2eBook(文本转电子书:mobi,epub,pdf,umd)
 
 **复杂的使用方法:**见: [AnsiTxt2Mobi](../mobi/AnsiTxt2Mobi.html)
 
+**Linux下使用方法:**使用wine可以运行本程序。注意使用选择文件按钮选择txt文件,umd,mobi文件都可以正常生成，若当前目录下存在 lantinghei.ttf，就可以生成PDF文件，epub文件因为两次调用zip.exe，可能由于权限问题，造成第一次生成的epub文件修改不了，导致主要文件添加失败，不过可以在.wine目录下的c驱动目录中找到临时目录，调用linux下的zip重新生成epub即可
+
 **可能的保存生成电子书的路径:**
 
 -   程序所在目录
@@ -38,6 +40,7 @@ Txt2eBook(文本转电子书:mobi,epub,pdf,umd)
 
 **更新日志:**
 
+-   2013-03-09: 添加: 选择文件按钮，便于在无法拖动的场合选择文件,多谢atuo
 -   2013-02-27: 修正: 提示行修正,多谢Andy Wu
 -   2013-02-18: 修正: Mac下解析br标签错误，替换为br闭合标签,多谢Shawn Wu 
 -   2013-07-15: 修正: GUI可缩放大小，预检测生成文件可能性

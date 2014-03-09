@@ -1,6 +1,6 @@
 #NoENV
 ; 预计功能: 根据正则分析标题，生成包含目录的ebook文件
-VerDate := "2014-02-27"
+VerDate := "2014-03-09"
 ; 2013-5-7: mobigen生成的mobi格式在Kindle PaperWhite上，跳转目录显示为乱码，需使用kindlegen
 If A_IsCompiled
 {
@@ -16,7 +16,7 @@ SettingMenu("初始化设置") ; 初始化菜单项设置
 
 FoxRElist =
 (Join|
-Ui)([第]?[0-9零○一二两三四五六七八九十百千廿卅卌壹贰叁肆伍陆柒捌玖拾佰仟万１２３４５６７８９０]{1,5}[章节節堂讲回集部分]{1})
+Ui)([第]?[0-9零○一二两三四五六七八九十百千廿卅卌壹贰叁肆伍陆柒捌玖拾佰仟万１２３４５６７８９０]{1,5}[章节節堂讲回集部分]?)
 Ui)(第[0-9零○一二两三四五六七八九十百千廿卅卌壹贰叁肆伍陆柒捌玖拾佰仟万１２３４５６７８９０]{1,5}[章节節堂讲回集部分]{1})
 Ui)(第.{1,5}章)
 Ui)([0-9]{1,5}\.)
@@ -37,6 +37,7 @@ NewGuiInit:
 	Gui, Add, Edit, x416 y30 w40 h20 vEdt1, 25
 
 	Gui, Add, GroupBox, x6 y70 w460 h270 cBlue, 第二步: 拖动Txt文件到下面，列表可编辑并影响生成结果
+	Gui, Add, Button, x346 y67 w100 h20 vAddnFile gAddnFile, 选择文件(&O)
 	Gui, Add, ListView, x16 y90 w440 h240 NoSortHdr -ReadOnly vFoxLV gClickLV, 标题|行号
 		 LV_ModifyCol(1, 320) , LV_ModifyCol(2, 90)
 
@@ -203,6 +204,16 @@ FoxMenuAct:
 
 return
 
+
+AddnFile:
+	FileSelectFile, Userselecttxt, 3, , , Novel Txt File(*.txt)
+	if ( Userselecttxt = "" )
+		return
+	IfNotExist, %Userselecttxt%
+		return
+	SrcFilePath := Userselecttxt
+	gosub, ReDragFile
+return
 
 
 ClickLV:
