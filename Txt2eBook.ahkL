@@ -1,6 +1,6 @@
 #NoENV
 ; 预计功能: 根据正则分析标题，生成包含目录的ebook文件
-VerDate := "2014-03-09"
+VerDate := "2014-04-30"
 ; 2013-5-7: mobigen生成的mobi格式在Kindle PaperWhite上，跳转目录显示为乱码，需使用kindlegen
 If A_IsCompiled
 {
@@ -198,9 +198,9 @@ FoxMenuAct:
 	If ( A_thismenuitem = "www.olsoul.com(&W)" )
 		OpenURL("http://www.olsoul.com")
 	If ( A_thismenuitem = "关于作者(&A)" )
-		TrayTip, 爱尔兰之狐:, QQ: 308639546`nhttp://www.autohotkey.net/~linpinger/index.html
+		TrayTip, 爱尔兰之狐:, QQ: 308639546`nhttp://linpinger.github.io
 	If ( A_thismenuitem = "作者作品页(&L)" )
-		OpenURL("http://www.autohotkey.net/~linpinger/index.html?s=ExeTxt2eBook")
+		OpenURL("http://linpinger.github.io?s=ExeTxt2eBook")
 
 return
 
@@ -255,14 +255,19 @@ ReDragFile: ; 重新检测文件
 	SB_SetText("稍候，正则处理文件中...")
 	sTime := A_TickCount
 
-	FileReadLine, BookName, %SrcFilePath%, 1
-	If ( BookName != "" )
-		LV_Add("", BookName, "★书名行，按F2修改，勿删本行★")
-	else {
-		SplitPath, SrcFilePath, , , , OutNameNoExt
+	; 以文件名当作书名
+	SplitPath, SrcFilePath, , , , OutNameNoExt
+	if OutNameNoExt is integer
+	{   ; 当文件名是数字时取第一行做书名
+		FileReadLine, BookName, %SrcFilePath%, 1
+		If ( BookName != "" )
+			LV_Add("", BookName, "★书名行，按F2修改，勿删本行★")
+		else
+			LV_Add("", "FoxBook", "★书名行，按F2修改，勿删本行★")
+	} else {
 		LV_Add("", OutNameNoExt, "★书名行，按F2修改，勿删本行★")
-		Traytip, 未检测到书名:, 以文件名替代书名，如有错误:`n请选中列表第一行并按F2修改
 	}
+
 	LV_Add("", "爱尔兰之狐", "★作者行，按F2修改，勿删本行★")
 	loop, parse, NR, `n, `r
 	{
@@ -496,7 +501,7 @@ LV_MoveRow(moveup = true) { ; 从英文论坛弄来的函数，功能调整ListView中的条目顺序
    }
 }
 
-OpenURL(URL="http://www.autohotkey.net/~linpinger/index.html?s=ExeTxt2eBook")
+OpenURL(URL="http://linpinger.github.io?s=ExeTxt2eBook")
 {
 	IfExist, %A_ProgramFiles%\Internet Explorer\IEXPLORE.EXE
 		run, %A_ProgramFiles%\Internet Explorer\IEXPLORE.EXE -new %URL%

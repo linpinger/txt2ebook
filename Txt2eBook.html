@@ -22,14 +22,14 @@ a:active{color:#FF0000}
 <b>功能:</b> 将文本文件转换为各种格式的电子书:mobi(Kindel电子书),Epub(不包含字体),pdf(6寸),umd(手机电子书)<br>
 <b>作者:</b> 爱尔兰之狐(linpinger)<br>
 <b>邮箱:</b> <a href="mailto:linpinger@gmail.com">linpinger@gmail.com</a><br>
-<b>主页:</b> <a href="http://www.autohotkey.net/~linpinger/index.html?s=Atc_Txt2eBook">http://www.autohotkey.net/~linpinger/index.html?s=Atc_Txt2eBook</a><br>
+<b>主页:</b> <a href="http://linpinger.github.io?s=Atc_Txt2eBook">http://linpinger.github.io?s=Atc_Txt2eBook</a><br>
 <br>
 <b>缘起:</b> 基于txt2mobi程序，添加其他格式支持，扩大使用范围<br>
 <b>原理:</b> TXT -&gt; UTF-8 HTML/NCX/OPF -&gt;(kindlegen/mobigen) Mobi / Epub<br>
 <br>
 <b>下载:</b><br>
 <ul>
-<li>程序(单独处理txt, 生成目录):</b> <a href="Txt2eBook.exe">Txt2eBook.exe</a></li>
+<li>程序(单独处理txt, 生成目录):</b> <a href="../../releases/download/Txt2eBook/Txt2eBook.exe">Txt2eBook.exe</a></li>
 <hr>
 <li>源代码(单独处理txt, 生成目录):</b> <a href="Txt2eBook.ahkL">Txt2eBook.ahkL</a></li>
 </ul>
@@ -53,6 +53,7 @@ a:active{color:#FF0000}
 
 <b>更新日志:</b><br>
 <ul>
+	<li>2014-04-30: 修正: 默认优先以文件名做书名，如果为数字，选一行为书名，若为空，为FoxBook</li>
 	<li>2013-03-09: 添加: 选择文件按钮，便于在无法拖动的场合选择文件,多谢atuo</li>
 	<li>2013-02-27: 修正: 提示行修正,多谢Andy Wu</li>
 	<li>2013-02-18: 修正: Mac下解析br标签错误，替换为br闭合标签,多谢Shawn Wu</li>

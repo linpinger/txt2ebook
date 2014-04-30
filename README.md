@@ -10,14 +10,14 @@ Txt2eBook(文本转电子书:mobi,epub,pdf,umd)
 
 **邮箱:** [linpinger@gmail.com](mailto:linpinger@gmail.com)
 
-**主页:** <http://www.autohotkey.net/~linpinger/index.html?s=Atc_Txt2eBook>
+**主页:** <http://linpinger.github.io?s=Atc_Txt2eBook>
 
 **缘起:** 基于txt2mobi程序，添加其他格式支持，扩大使用范围
 
 **原理:** TXT -\> UTF-8 HTML/NCX/OPF -\>(kindlegen/mobigen) Mobi / Epub
 
 **下载:**
--   程序(单独处理txt, 生成目录): [Txt2eBook.exe](Txt2eBook.exe)
+-   程序(单独处理txt, 生成目录): [Txt2eBook.exe](../../releases/download/Txt2eBook/Txt2eBook.exe)
 -   源代码(单独处理txt, 生成目录): [Txt2eBook.ahkL](Txt2eBook.ahkL)
 
 本程序从[AnsiTxt2Mobi](../mobi/AnsiTxt2Mobi.html)升级而来
@@ -40,6 +40,7 @@ Txt2eBook(文本转电子书:mobi,epub,pdf,umd)
 
 **更新日志:**
 
+-   2014-04-30: 修正: 默认优先以文件名做书名，如果为数字，选一行为书名，若为空，为FoxBook
 -   2013-03-09: 添加: 选择文件按钮，便于在无法拖动的场合选择文件,多谢atuo
 -   2013-02-27: 修正: 提示行修正,多谢Andy Wu
 -   2013-02-18: 修正: Mac下解析br标签错误，替换为br闭合标签,多谢Shawn Wu 
