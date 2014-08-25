@@ -17,8 +17,10 @@ Txt2eBook(文本转电子书:mobi,epub,pdf,umd)
 **原理:** TXT -\> UTF-8 HTML/NCX/OPF -\>(kindlegen/mobigen) Mobi / Epub
 
 **下载:**
+-   百度网盘下载 <http://pan.baidu.com/s/1bnqxdjL>
 -   程序(单独处理txt, 生成目录): [Txt2eBook.exe](../../releases/download/Txt2eBook/Txt2eBook.exe)
 -   源代码(单独处理txt, 生成目录): [Txt2eBook.ahkL](Txt2eBook.ahkL)
+-   依赖的库在另外一个项目FoxBook-ahk中，<https://github.com/linpinger/foxbook-ahk.git>
 
 本程序从[AnsiTxt2Mobi](../mobi/AnsiTxt2Mobi.html)升级而来
 
@@ -40,6 +42,7 @@ Txt2eBook(文本转电子书:mobi,epub,pdf,umd)
 
 **更新日志:**
 
+-   2014-08-25: 添加: 封面图片的添加，没相应设备测试效果，应该有用，不行的话可能要在一个专门的页面中显示图片了，那样又要加一个网页和其他一些引用
 -   2014-04-30: 修正: 默认优先以文件名做书名，如果为数字，选一行为书名，若为空，为FoxBook
 -   2013-03-09: 添加: 选择文件按钮，便于在无法拖动的场合选择文件,多谢atuo
 -   2013-02-27: 修正: 提示行修正,多谢Andy Wu

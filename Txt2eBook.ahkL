@@ -1,6 +1,6 @@
 #NoENV
 ; 预计功能: 根据正则分析标题，生成包含目录的ebook文件
-VerDate := "2014-04-30"
+VerDate := "2014-08-25"
 ; 2013-5-7: mobigen生成的mobi格式在Kindle PaperWhite上，跳转目录显示为乱码，需使用kindlegen
 If A_IsCompiled
 {
@@ -32,7 +32,7 @@ NewGuiInit:
 ;		Gui, +AlwaysOnTop
 	Gui, Add, GroupBox, x6 y10 w460 h50 cBlue, 第一步: 正则表达式定位标题，影响拖入文件处理过程
 	Gui, Add, CheckBox, x16 y30 w110 h20 cGreen Checked vCK1, 标题正则定位:
-	Gui, Add, ComboBox, x126 y30 w180 h20 R20 Choose1 vRE1, %FoxRElist%
+	Gui, Add, ComboBox, x126 y30 w180 h20 R20 Choose3 vRE1, %FoxRElist%
 	Gui, Add, CheckBox, x316 y30 w100 h20 cGreen Checked vCK2, 最长字符数:
 	Gui, Add, Edit, x416 y30 w40 h20 vEdt1, 25
 
@@ -383,6 +383,10 @@ Txt2eBook:   ; 依赖 SrcFilePath
 		}
 		oEpub := new FoxEpub(BookName)
 		oEpub.BookCreator := FoxCreator
+		CoverImgPath := FoxVar("CoverPicPath")
+		if ( CoverImgPath != "" ) {
+			oEpub.SetCover(CoverImgPath)
+		}
 		loop, %ChapterCount%
 			oEpub.AddChapter(FoxXMLGetSec(Body, "title" . A_index), FoxXMLGetSec(Body, "body" . A_index))
 		SB_SetText("1 / 2 耗时: " . eTime . "  网页生成完毕")
