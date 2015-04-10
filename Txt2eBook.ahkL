@@ -1,26 +1,36 @@
 #NoENV
 ; 预计功能: 根据正则分析标题，生成包含目录的ebook文件
-VerDate := "2014-08-25"
+VerDate := "2015-04-10"
 ; 2013-5-7: mobigen生成的mobi格式在Kindle PaperWhite上，跳转目录显示为乱码，需使用kindlegen
 If A_IsCompiled
 {
 	FoxDir := FoxReg("保存目录")
 	If ( FoxDir = -5 )
 		FoxDir := A_scriptdir
-} else
+} else {
 	FoxDir := "C:\etc"
+}
 LVListPath := FoxDir . "\FoxListView.txt"
 FoxVar("BookCreator", "爱尔兰之狐") ; ---
 
 SettingMenu("初始化设置") ; 初始化菜单项设置
 
 FoxRElist =
-(Join|
+(Join`n
+Ui)(第.{1,5}章)
 Ui)([第]?[0-9零○一二两三四五六七八九十百千廿卅卌壹贰叁肆伍陆柒捌玖拾佰仟万１２３４５６７８９０]{1,5}[章节節堂讲回集部分]?)
 Ui)(第[0-9零○一二两三四五六七八九十百千廿卅卌壹贰叁肆伍陆柒捌玖拾佰仟万１２３４５６７８９０]{1,5}[章节節堂讲回集部分]{1})
-Ui)(第.{1,5}章)
 Ui)([0-9]{1,5}\.)
 )
+FoxRECount := FoxReg("正则表达式计数")
+if FoxRECount is integer
+{
+	if ( FoxRECount > 0 ) {
+		FoxRElist := ""
+		loop, %FoxRECount%
+			FoxRElist .= FoxReg("正则表达式_" . A_index) . "`n"
+	}
+}
 
 
 Gui +LastFound +Resize +MinSize480x425 + MaxSize600x500
@@ -30,15 +40,16 @@ Gosub, MenuInit
 NewGuiInit:
 ;	If A_IsCompiled
 ;		Gui, +AlwaysOnTop
+	Gui, +Delimiter`n
 	Gui, Add, GroupBox, x6 y10 w460 h50 cBlue, 第一步: 正则表达式定位标题，影响拖入文件处理过程
 	Gui, Add, CheckBox, x16 y30 w110 h20 cGreen Checked vCK1, 标题正则定位:
-	Gui, Add, ComboBox, x126 y30 w180 h20 R20 Choose3 vRE1, %FoxRElist%
+	Gui, Add, ComboBox, x126 y30 w180 h20 R20 Choose1 vRE1, %FoxRElist%
 	Gui, Add, CheckBox, x316 y30 w100 h20 cGreen Checked vCK2, 最长字符数:
 	Gui, Add, Edit, x416 y30 w40 h20 vEdt1, 25
 
 	Gui, Add, GroupBox, x6 y70 w460 h270 cBlue, 第二步: 拖动Txt文件到下面，列表可编辑并影响生成结果
 	Gui, Add, Button, x346 y67 w100 h20 vAddnFile gAddnFile, 选择文件(&O)
-	Gui, Add, ListView, x16 y90 w440 h240 NoSortHdr -ReadOnly vFoxLV gClickLV, 标题|行号
+	Gui, Add, ListView, x16 y90 w440 h240 NoSortHdr -ReadOnly vFoxLV gClickLV, 标题`n行号
 		 LV_ModifyCol(1, 320) , LV_ModifyCol(2, 90)
 
 	Gui, Add, GroupBox, x6 y350 w460 h50 cBlue, 第三步: 处理过程选项，确认后按顶部菜单 生成eBook
@@ -331,6 +342,8 @@ Txt2eBook:   ; 依赖 SrcFilePath
 		return
 	}
 
+	saveNowREList() ; 保存RE1表达式
+
 	LinkID := 11 , LVNum := 3 , Toc := "" , Body := ""
 	LV_GetText(NowTitle, LVNum, 1) , LV_GetText(NownTitleLine, LVNum, 2)
 	TheFirstTitle := NownTitleLine
@@ -611,6 +624,32 @@ FoxInput(wParam, lParam, msg, hwnd)  ; 在特殊控件按下特殊按键的反应
 {
 	If ( A_GuiControl = "RE1" and wParam = 13 )
 		gosub, ReDragFile
+}
+
+saveNowREList() ; 保存RE表达式
+{
+	global FoxRElist, FoxRECount
+	GuiControlGet, RE1
+
+	; 过滤相同并重新排序列表
+	nREList := RE1 . "`n"
+	FoxRECount := 1
+	FoxReg("正则表达式_" . FoxRECount, RE1) ; 写入注册表
+	loop, parse, FoxRElist, `n, `r
+	{
+		If ( A_loopField = "" )
+			Continue
+
+		If ( A_loopfield != RE1 ) {
+			++FoxRECount
+			nREList .= A_loopfield . "`n"
+			FoxReg("正则表达式_" . FoxRECount, A_loopfield) ; 写入注册表
+		}
+	}
+	FoxReg("正则表达式计数", FoxRECount)
+	FoxRElist := nREList
+	GuiControl, , RE1, `n%nREList%
+	GuiControl, choose, RE1, 1
 }
 
 #include <FoxEpub_Class>
