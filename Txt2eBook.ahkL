@@ -1,6 +1,6 @@
 #NoENV
 ; 预计功能: 根据正则分析标题，生成包含目录的ebook文件
-VerDate := "2015-04-10"
+VerDate := "2015-11-02"
 ; 2013-5-7: mobigen生成的mobi格式在Kindle PaperWhite上，跳转目录显示为乱码，需使用kindlegen
 If A_IsCompiled
 {
@@ -431,7 +431,9 @@ Txt2eBook:   ; 依赖 SrcFilePath
 		loop, %ChapterCount%
 		{
 			SB_SetText("生成UMD章节: " . A_index)
-			oUMD.AddChapter(FoxXMLGetSec(Body, "title" . A_index), FoxXMLGetSec(Body, "body" . A_index))
+			originBody := FoxXMLGetSec(Body, "body" . A_index)
+			StringReplace, originBody, originBody, `n, `r`n, A  ; 2015-11-2: alone 反馈在某些阅读器中换行不正确
+			oUMD.AddChapter(FoxXMLGetSec(Body, "title" . A_index), originBody)
 		}
 		SB_SetText("保存UMD文件: " . FoxDir . "\" . bookname . "." . EpubOutExt)
 		oUMD.SaveTo(FoxDir . "\" . bookname . "." . EpubOutExt)
