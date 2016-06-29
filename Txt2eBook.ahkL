@@ -1,6 +1,6 @@
 #NoENV
 ; 预计功能: 根据正则分析标题，生成包含目录的ebook文件
-VerDate := "2015-11-02"
+VerDate := "2016-06-29"
 ; 2013-5-7: mobigen生成的mobi格式在Kindle PaperWhite上，跳转目录显示为乱码，需使用kindlegen
 If A_IsCompiled
 {
@@ -279,7 +279,11 @@ ReDragFile: ; 重新检测文件
 		LV_Add("", OutNameNoExt, "★书名行，按F2修改，勿删本行★")
 	}
 
-	LV_Add("", "爱尔兰之狐", "★作者行，按F2修改，勿删本行★")
+	FileReadLine, Creator, %SrcFilePath%, 2
+	if ( "" != Creator )
+		LV_Add("", Creator, "★作者行，按F2修改，勿删本行★")
+	else
+		LV_Add("", "爱尔兰之狐", "★作者行，按F2修改，勿删本行★")
 	loop, parse, NR, `n, `r
 	{
 		If ( CK2 = 1 ) {
