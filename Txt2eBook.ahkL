@@ -1,15 +1,12 @@
 #NoENV
 ; 预计功能: 根据正则分析标题，生成包含目录的ebook文件
-VerDate := "2016-06-29"
+VerDate := "2016-07-01"
 ; 2013-5-7: mobigen生成的mobi格式在Kindle PaperWhite上，跳转目录显示为乱码，需使用kindlegen
-If A_IsCompiled
-{
+
 	FoxDir := FoxReg("保存目录")
 	If ( FoxDir = -5 )
 		FoxDir := A_scriptdir
-} else {
-	FoxDir := "C:\etc"
-}
+
 LVListPath := FoxDir . "\FoxListView.txt"
 FoxVar("BookCreator", "爱尔兰之狐") ; ---
 
@@ -69,9 +66,11 @@ MenuInit: ; 菜单栏
 	Menu, SiteMenu, Add
 	Menu, SiteMenu, Add, 热键说明, FoxMenuAct
 	Menu, SiteMenu, Add
-	Menu, SiteMenu, Add, www.olsoul.com(&W), FoxMenuAct
+	Menu, SiteMenu, Add, 关于作者(&A), FoxMenuAct
 	Menu, SiteMenu, Add
 	Menu, SiteMenu, Add, 作者作品页(&L), FoxMenuAct
+	Menu, SiteMenu, Add, 作者作品页国内镜像(&M), FoxMenuAct
+	Menu, SiteMenu, Add, www.olsoul.com(&W), FoxMenuAct
 	Menu, MyMenuBar, Add, 帮助(&H), :SiteMenu
 
 	SettingMenu("添加菜单", 1)
@@ -212,7 +211,8 @@ FoxMenuAct:
 		TrayTip, 爱尔兰之狐:, QQ: 308639546`nhttp://linpinger.github.io
 	If ( A_thismenuitem = "作者作品页(&L)" )
 		OpenURL("http://linpinger.github.io?s=ExeTxt2eBook")
-
+	If ( A_thismenuitem = "作者作品页国内镜像(&M)" )
+		OpenURL("http://linpinger.oschina.io?s=ExeTxt2eBook")
 return
 
 
@@ -310,6 +310,10 @@ return
 
 Txt2eBook:   ; 依赖 SrcFilePath
 	Gui, Submit, nohide
+	if ( 0 = LV_GetCount() ) {
+		TrayTip, 错误:, 请选择要处理的文件或拖入列表框
+		return
+	}
 	If ( SrcFilePath = "" )
 		SrcFilePath := FoxReg("上次文件路径")
 	IfNotExist, %SrcFilePath%
@@ -390,15 +394,17 @@ Txt2eBook:   ; 依赖 SrcFilePath
 	if ( EpubOutExt = "epub" or EpubOutExt = "mobi" ) {
 		if ( EpubOutExt = "epub" ) {
 			FileInstall, zip.exe, zip.exe, 1
-			IfNotExist, zip.exe
-				TrayTip, 错误:, zip.exe 释放失败`n可能是360之类的安全程序阻止
+			If A_IsCompiled
+				IfNotExist, zip.exe
+					TrayTip, 错误:, zip.exe 释放失败`n可能是360之类的安全程序阻止
 		}
 		if ( EpubOutExt = "mobi" ) {
 			FileInstall, kindlegen.exe, kindlegen.exe, 1
-			IfNotExist, kindlegen.exe
-				TrayTip, 错误:, kindlegen.exe 释放失败`n可能是360之类的安全程序阻止
+			If A_IsCompiled
+				IfNotExist, kindlegen.exe
+					TrayTip, 错误:, kindlegen.exe 释放失败`n可能是360之类的安全程序阻止
 		}
-		oEpub := new FoxEpub(BookName)
+		oEpub := new FoxEpub(BookName, FoxDir . "\temp_" . A_now)
 		oEpub.BookCreator := FoxCreator
 		CoverImgPath := FoxVar("CoverPicPath")
 		if ( CoverImgPath != "" ) {
@@ -409,19 +415,16 @@ Txt2eBook:   ; 依赖 SrcFilePath
 		SB_SetText("1 / 2 耗时: " . eTime . "  网页生成完毕")
 		oEpub.SaveTo(FoxDir . "\FoxIndex." . EpubOutExt)
 
-		If A_IsCompiled
-		{
-			IfNotExist, %FoxDir%\FoxIndex.%EpubOutExt%
-				TrayTip, 错误:, 生成%EpubOutExt%文件失败
-			Filemove, %FoxDir%\FoxIndex.%EpubOutExt%, %FoxDir%\%bookname%.%EpubOutExt%, 1
-			IfNotExist, %FoxDir%\%bookname%.%EpubOutExt%
-				TrayTip, 错误:, 重命名%EpubOutExt%文件失败
-			/*
-			If ( "是" = FoxVar("DelTmpFiles") ) {
-				FileDelete, %FoxDir%\FoxIndex.opf
-			}
-			*/
+		IfNotExist, %FoxDir%\FoxIndex.%EpubOutExt%
+			TrayTip, 错误:, 生成FoxIndex.%EpubOutExt%文件失败
+		Filemove, %FoxDir%\FoxIndex.%EpubOutExt%, %FoxDir%\%bookname%.%EpubOutExt%, 1
+		IfNotExist, %FoxDir%\%bookname%.%EpubOutExt%
+			TrayTip, 错误:, 重命名%EpubOutExt%文件失败
+		/*
+		If ( "是" = FoxVar("DelTmpFiles") ) {
+			FileDelete, %FoxDir%\FoxIndex.opf
 		}
+		*/
 		eTime := A_TickCount - sTime
 		SB_SetText("2 / 2 耗时: " . eTime . "  " . EpubOutExt . "生成完毕: " . FoxDir . "\" . bookname . "." . EpubOutExt)
 		EpubOutExt := ""
@@ -429,8 +432,9 @@ Txt2eBook:   ; 依赖 SrcFilePath
 	}
 	if ( EpubOutExt = "umd" ) {
 		FileInstall, UMD.dll, UMD.dll, 1
-		IfNotExist, UMD.dll
-			TrayTip, 错误:, UMD.dll 释放失败`n可能是360之类的安全程序阻止
+		If A_IsCompiled
+			IfNotExist, UMD.dll
+				TrayTip, 错误:, UMD.dll 释放失败`n可能是360之类的安全程序阻止
 		oUMD := new FoxUMD(bookname)
 		loop, %ChapterCount%
 		{
@@ -444,8 +448,9 @@ Txt2eBook:   ; 依赖 SrcFilePath
 	}
 	if ( EpubOutExt = "pdf" ) {
 		FileInstall, libhpdf.dll, libhpdf.dll, 1
-		IfNotExist, libhpdf.dll
-			TrayTip, 错误:, libhpdf.dll 释放失败`n可能是360之类的安全程序阻止
+		If A_IsCompiled
+			IfNotExist, libhpdf.dll
+				TrayTip, 错误:, libhpdf.dll 释放失败`n可能是360之类的安全程序阻止
 		oPDF := new FoxPDF(bookname)
 		loop, %ChapterCount%
 		{
