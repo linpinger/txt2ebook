@@ -1,6 +1,6 @@
 #NoENV
 ; 预计功能: 根据正则分析标题，生成包含目录的ebook文件
-VerDate := "2016-07-01"
+VerDate := "2016-07-04"
 ; 2013-5-7: mobigen生成的mobi格式在Kindle PaperWhite上，跳转目录显示为乱码，需使用kindlegen
 
 	FoxDir := FoxReg("保存目录")
@@ -346,8 +346,15 @@ Txt2eBook:   ; 依赖 SrcFilePath
 			return
 		}
 	} else {
-		msgbox, 文件已存在，请重命名原文件`n%TestPath%
-		return
+		NewOLDFile := bookname . "_" . A_now . "." . EpubOutExt
+		Filemove, %TestPath%, %BookName%\%NewOLDFile%, 1
+		ifExist, %TestPath%
+		{
+			msgbox, 重命名失败，请手动修改文件名`n%TestPath%
+			return
+		} else {
+			TrayTip, 文件已存在:, 已重命名:`n%BookName%.%EpubOutExt%`n为`n%NewOLDFile%
+		}
 	}
 
 	saveNowREList() ; 保存RE1表达式
